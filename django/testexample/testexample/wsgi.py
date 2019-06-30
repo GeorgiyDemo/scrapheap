@@ -1,5 +1,5 @@
 """
-WSGI config for avitodumper project.
+WSGI config for testexample project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'avitodumper.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testexample.settings')
 
 application = get_wsgi_application()
