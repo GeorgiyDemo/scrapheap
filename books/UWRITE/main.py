@@ -14,12 +14,13 @@ import browser_module
 import settings_module
 
 PDF_FILE = "OUTPUT.pdf"
+URL_DENY = "https://biblio-online.ru/images/page_deny.svg"
 
-@staticmethod
 def cookies_validator(cookies, url):
     r = requests.get(url, allow_redirects=True, cookies=cookies)
-    print(r.headers['location'])
-    open("TEST.svg", 'wb').write(r.content)
+    if r.url == URL_DENY:
+        return False
+    return True
 
 class FinalProcessingClass(object):
     def __init__(self, input_paths):
@@ -53,6 +54,7 @@ class FinalProcessingClass(object):
 
 class FileProcessing(object):
     def __init__(self, number, book_url):
+        #TODO Получить cookies
         self.result = "processing"
         self.number = number
         self.book_url = book_url
@@ -83,14 +85,8 @@ class MainClass(object):
         self.main()
 
     def main(self):
-        
         cookies_flag = cookies_validator(self.cookies,self.settings["TESTING_URL"])
-
-        #TODO Логика: проверяем на то, есть ли куки и валидные ли они, если нет - получаем новые
-        
-        #Получаем новые
-        browser_module.SeleniumClass(self.settings)
-        return 0
+        browser_module.SeleniumClass(self.settings, cookies_flag)
         pdf_filelist = []
         page_number = 1
         while True:
