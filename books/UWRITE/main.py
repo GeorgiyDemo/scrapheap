@@ -4,58 +4,64 @@
 
 import requests
 import os
+import glob
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPDF
 
-URL = ""
+import browser_module
+import settings_module
+
 PDF_FILE = "OUTPUT.pdf"
 
-cookies = {
-    "__atssc":"",
-    "__atuvc": "",
-    "__atuvs": "",
-    "__cfduid": "",
-    "_fbp":"",
-    "_ga":"",
-    "_gat_UA-39193361-1":"",
-    "_gid":"",
-    "_ym_d":"",
-    "_ym_isad":"",
-    "_ym_uid":"",
-    "_ym_visorc_42398809":"",
-    "jv_enter_ts_0avhLAO4rv":"",
-    "jv_pages_count_0avhLAO4rv":"",
-    "jv_visits_count_0avhLAO4rv":"",
-    "laravel_session":"",
-    "popupDisplayWebinarsGuest":"",
-    "popupDisplayWebinarsNonGuest":"",
-}
+@staticmethod
+def cookies_validator(cookies, url):
+    r = requests.get(url, allow_redirects=True, cookies=cookies)
+    print(r.headers['location'])
+    open("TEST.svg", 'wb').write(r.content)
 
-def merger(input_paths):
-    pdf_writer = PdfFileWriter()
- 
-    for path in input_paths:
-        pdf_reader = PdfFileReader(path)
-        for page in range(pdf_reader.getNumPages()):
-            pdf_writer.addPage(pdf_reader.getPage(page))
- 
-    with open(PDF_FILE, 'wb') as fh:
-        pdf_writer.write(fh)
+class FinalProcessingClass(object):
+    def __init__(self, input_paths):
+        self.input_paths = input_paths
+        self.merger()
+        self.remover()
 
-    print("Создали PDF <3")
+    def merger(self):
+        pdf_writer = PdfFileWriter()
+    
+        for path in self.input_paths:
+            pdf_reader = PdfFileReader(path)
+            for page in range(pdf_reader.getNumPages()):
+                pdf_writer.addPage(pdf_reader.getPage(page))
+    
+        with open(PDF_FILE, 'wb') as fh:
+            pdf_writer.write(fh)
+        print("Создали PDF <3")
+
+    def remover(self):
+        remove_list = []
+        for file in glob.glob("*.svg"):
+            remove_list.append(file)
+        for file in glob.glob("*.pdf"):
+            remove_list.append(file)
+        
+        remove_list.remove(PDF_FILE)
+        for item in remove_list:
+            os.remove(item)
+        print("Удаление файлов успешно")
 
 class FileProcessing(object):
-    def __init__(self, number):
+    def __init__(self, number, book_url):
         self.result = "processing"
         self.number = number
+        self.book_url = book_url
         self.get_book()
         self.to_pdf()
     
     def get_book(self):
-        print(URL+self.number)
-        r = requests.get(URL+self.number, allow_redirects=True, cookies=cookies)
+        print(self.book_url + self.number)
+        r = requests.get(self.book_url + self.number, allow_redirects=True, cookies=cookies)
         open("file"+self.number+".svg", 'wb').write(r.content)
 
     def to_pdf(self):
@@ -68,18 +74,33 @@ class FileProcessing(object):
 
 class MainClass(object):
     def __init__(self):
+        sobj = settings_module.GetSettings()
+        self.settings = sobj.settings
+
+        cobj = settings_module.GetCookies()
+        self.cookies = cobj.cookies
+
         self.main()
 
     def main(self):
+        
+        cookies_flag = cookies_validator(self.cookies,self.settings["TESTING_URL"])
+
+        #TODO Логика: проверяем на то, есть ли куки и валидные ли они, если нет - получаем новые
+        
+        #Получаем новые
+        browser_module.SeleniumClass(self.settings)
+        return 0
         pdf_filelist = []
         page_number = 1
         while True:
-            obj = FileProcessing(str(page_number))
+            obj = FileProcessing(str(page_number), self.settings["BOOK_URL"])
             if obj.result == "ready":
                 break
             pdf_filelist.append("file"+str(page_number)+".pdf")
             page_number += 1
-        merger(pdf_filelist)
+
+        FinalProcessingClass(pdf_filelist)
 
 if __name__ == "__main__":
     MainClass()

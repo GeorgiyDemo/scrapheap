@@ -5,14 +5,17 @@ import os
 import time
 
 class SeleniumClass(object):
-    def __init__(self, main_url, book_url):
-        self.main_url = main_url
-        self.book_url = book_url
+
+    def __init__(self, settings):
+
+        self.main_url = settings["MAIN_URL"]
+        self.book_url = settings["BOOK_URL"]
+        self.login = settings["LOGIN"]
+        self.password = settings["PASSWORD"]
         self.selenium()
 
     def selenium(self):
 
-        #TODO Логика: проверяем на то, есть ли куки и валидные ли они, если нет - получаем новые
         driver = webdriver.Chrome(os.path.dirname(os.path.abspath(__file__))+"/chromedriver")
         driver.get(self.main_url)
         time.sleep(1)
@@ -29,11 +32,11 @@ class SeleniumClass(object):
         login_element = driver.find_element_by_xpath('//*[@id="login"]')
         login_element.click()
         login_element.clear()
-        login_element.send_keys("ЛОГИН_БЛАТНОЙ")
+        login_element.send_keys(self.login)
         password_element = driver.find_element_by_xpath('//*[@id="password"]')
         password_element.click()
         password_element.clear()
-        password_element.send_keys("ПАРОЛЬ_ТОЖЕ_БЛАТНОЙ")
+        password_element.send_keys(self.password)
         time.sleep(1)
 
         #Вход на сайт
