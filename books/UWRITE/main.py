@@ -53,8 +53,9 @@ class FinalProcessingClass(object):
         print("Удаление файлов успешно")
 
 class FileProcessing(object):
-    def __init__(self, number, book_url):
+    def __init__(self, number, book_url, cookies):
         #TODO Получить cookies
+        self.cookies = cookies
         self.result = "processing"
         self.number = number
         self.book_url = book_url
@@ -63,7 +64,7 @@ class FileProcessing(object):
     
     def get_book(self):
         print(self.book_url + self.number)
-        r = requests.get(self.book_url + self.number, allow_redirects=True, cookies=cookies)
+        r = requests.get(self.book_url + self.number, allow_redirects=True, cookies=self.cookies)
         open("file"+self.number+".svg", 'wb').write(r.content)
 
     def to_pdf(self):
@@ -95,7 +96,7 @@ class MainClass(object):
         page_number = 1
 
         while True:
-            obj = FileProcessing(str(page_number), self.settings["BOOK_URL"])
+            obj = FileProcessing(str(page_number), self.settings["BOOK_URL"], self.cookies)
             if obj.result == "ready":
                 break
             pdf_filelist.append("file"+str(page_number)+".pdf")
