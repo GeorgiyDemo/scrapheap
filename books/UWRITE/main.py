@@ -86,9 +86,14 @@ class MainClass(object):
 
     def main(self):
         cookies_flag = cookies_validator(self.cookies,self.settings["TESTING_URL"])
-        browser_module.SeleniumClass(self.settings, cookies_flag)
+        if cookies_flag == False:
+            browser_module.SeleniumClass(self.settings)
+            cobj = settings_module.GetCookies()
+            self.cookies = cobj.cookies
+            
         pdf_filelist = []
         page_number = 1
+
         while True:
             obj = FileProcessing(str(page_number), self.settings["BOOK_URL"])
             if obj.result == "ready":
