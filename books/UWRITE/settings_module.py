@@ -36,5 +36,5 @@ class SetCookies(object):
         self.set_cookies()
 
     def set_cookies(self):
-        with open('cookies.yml', 'w') as outfile:
+        with open('./yaml/cookies.yml', 'w') as outfile:
             yaml.dump(self.cookies_dict, outfile)
