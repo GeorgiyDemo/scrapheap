@@ -100,7 +100,3 @@ ENV/
 # mypy
 .mypy_cache/
 *.DS_Store
-books/UWRITE/chromedriver
-*.pdf
-*.svg
-*.yml
