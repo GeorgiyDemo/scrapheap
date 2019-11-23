@@ -1,6 +1,6 @@
 class val_var {
     //Неизменяемое поле
-    private val example_val = 1;
+    private var example_val = 1;
     //Изменяемое поле
     private var example_var = 2;
 
@@ -8,12 +8,12 @@ class val_var {
         this.example_var = i
     }
 
-    /*
-    Ошибка!!
+
+    //Ошибка!!
     open fun set_val(i: Int){
         this.example_val = i
     }
-     */
+
     open fun get_val(): Int {
         return this.example_val
     }

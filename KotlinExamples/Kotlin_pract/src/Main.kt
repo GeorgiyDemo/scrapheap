@@ -33,7 +33,7 @@ fun substring_example() {
 }
 
 fun main() {
-    var check: String = "MEOW"
+    var check = "MEOW"
     println("Что говорят Koshkas?\n$check")
 
     alter()
