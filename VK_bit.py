@@ -4,8 +4,8 @@ import schedule
 import time
 import vk
 
-session = vk.Session(access_token='token1')
-admin = vk.Session(access_token='token2')
+session = vk.Session(access_token="token1")
+admin = vk.Session(access_token="token2")
 api = vk.API(session)
 human = vk.API(admin)
 maingroup = 128947927
@@ -14,7 +14,7 @@ maingroup_fix = -128947927
 
 def get_users():
     users = api.groups.getMembers(group_id=maingroup)
-    mas = users['users']
+    mas = users["users"]
     return mas
 
 
@@ -25,13 +25,15 @@ def messages():
         for i in range(len(kotiki)):
             try:
                 api.messages.send(user_id=kotiki[i], message=message)
-                print('Отправили сообщение [id' + str(kotiki[i]) + ']')
+                print("Отправили сообщение [id" + str(kotiki[i]) + "]")
             except:
-                print('Ошибка отправки [id' + str(kotiki[i]) + ']')
+                print("Ошибка отправки [id" + str(kotiki[i]) + "]")
 
 
 def status():
-    human.status.set(text='Buy: ' + str(buy) + '$ Sell: ' + str(sell) + '$', group_id=maingroup)
+    human.status.set(
+        text="Buy: " + str(buy) + "$ Sell: " + str(sell) + "$", group_id=maingroup
+    )
     human.wall.post(owner_id=maingroup_fix, from_group=1, message=message)
 
 
@@ -55,10 +57,10 @@ while True:
     bb = datetime.date.today()
 
     # Работа с API блокчейна
-    check = requests.get('https://blockchain.info/ru/ticker').json()
-    USD = check['USD']
-    buy = USD['buy']
-    sell = USD['sell']
-    message = 'Buy: ' + str(buy) + '$\nSell: ' + str(sell) + '$'
+    check = requests.get("https://blockchain.info/ru/ticker").json()
+    USD = check["USD"]
+    buy = USD["buy"]
+    sell = USD["sell"]
+    message = "Buy: " + str(buy) + "$\nSell: " + str(sell) + "$"
 
     time.sleep(10)

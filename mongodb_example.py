@@ -4,11 +4,7 @@ import pymongo
 
 
 def get_choise():
-    d = {
-        0: "admin",
-        1: "student",
-        2: "moderator"
-    }
+    d = {0: "admin", 1: "student", 2: "moderator"}
     return d[randint(0, 2)]
 
 
@@ -27,7 +23,7 @@ def get_data(db):
 
 if __name__ == "__main__":
     myclient = pymongo.MongoClient("mongodb://root:example@127.0.0.1:27017/")
-    mydb = myclient['check_db']
+    mydb = myclient["check_db"]
     mycol = mydb["users"]
 
     # write_data(mycol)

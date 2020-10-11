@@ -6,31 +6,35 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 
-@app.route('/suggestions')
+@app.route("/suggestions")
 def suggestions():
-    text = request.args.get('jsdata')
+    text = request.args.get("jsdata")
 
     suggestions_list = []
 
     if text:
-        r = requests.get('http://suggestqueries.google.com/complete/search?output=toolbar&hl=ru&q={}&gl=in'.format(text))
+        r = requests.get(
+            "http://suggestqueries.google.com/complete/search?output=toolbar&hl=ru&q={}&gl=in".format(
+                text
+            )
+        )
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.content, "lxml")
 
-        suggestions = soup.find_all('suggestion')
+        suggestions = soup.find_all("suggestion")
 
         for suggestion in suggestions:
-            suggestions_list.append(suggestion.attrs['data'])
+            suggestions_list.append(suggestion.attrs["data"])
 
-        #print(suggestions_list)
+        # print(suggestions_list)
 
-    return render_template('suggestions.html', suggestions=suggestions_list)
+    return render_template("suggestions.html", suggestions=suggestions_list)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

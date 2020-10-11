@@ -6,7 +6,7 @@ import vk
 user_id = 13
 chat_fix = 2000000000 + user_id
 # Основная конфигурация
-session = vk.Session(access_token='token')
+session = vk.Session(access_token="token")
 api = vk.API(session)
 APIVersion = 5.73
 
@@ -15,11 +15,17 @@ print(check)
 time.sleep(10)
 while True:
     try:
-        api.messages.edit(peer_id=chat_fix, message="бунд", message_id=check, v=APIVersion)
+        api.messages.edit(
+            peer_id=chat_fix, message="бунд", message_id=check, v=APIVersion
+        )
         time.sleep(2)
-        api.messages.edit(peer_id=chat_fix, message="снова", message_id=check, v=APIVersion)
+        api.messages.edit(
+            peer_id=chat_fix, message="снова", message_id=check, v=APIVersion
+        )
         time.sleep(2)
-        api.messages.edit(peer_id=chat_fix, message="снова бунд(", message_id=check, v=APIVersion)
+        api.messages.edit(
+            peer_id=chat_fix, message="снова бунд(", message_id=check, v=APIVersion
+        )
         time.sleep(2)
     except:
         print("Поймали капчу")

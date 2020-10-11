@@ -20,8 +20,11 @@ def dx(x):
 def dy(y):
     return 32 * y
 
+
 # Какая-то жажа и первый кадр пропускается
 skip_first = True
+
+
 def draw_gradient_points(num, point, line):
     global previous_x, previous_y, skip_first, ax
     if skip_first:
@@ -29,7 +32,16 @@ def draw_gradient_points(num, point, line):
         return point
     current_x = previous_x - STEP_SIZE * dx(previous_x)
     current_y = previous_y - STEP_SIZE * dy(previous_y)
-    print("Step:", num, "CurX:", current_x, "CurY", current_y, "Fun:", func(current_x, current_y))
+    print(
+        "Step:",
+        num,
+        "CurX:",
+        current_x,
+        "CurY",
+        current_y,
+        "Fun:",
+        func(current_x, current_y),
+    )
     point.set_data([current_x], [current_y])
     # Blah-blah
     new_x = list(line.get_xdata()) + [previous_x, current_x]
@@ -51,13 +63,13 @@ ax.set_ylabel("Y", fontsize=18)
 
 X, Y = np.meshgrid(X, Y)
 plt.contour(X, Y, func(X, Y))
-point, = plt.plot([8.8], [8.5], 'bo')
-line, = plt.plot([], color='black')
+(point,) = plt.plot([8.8], [8.5], "bo")
+(line,) = plt.plot([], color="black")
 
 
-gradient_anim = anim.FuncAnimation(fig, draw_gradient_points, frames=STEP_COUNT,
-                                   fargs=(point, line),
-                                   interval=1500)
+gradient_anim = anim.FuncAnimation(
+    fig, draw_gradient_points, frames=STEP_COUNT, fargs=(point, line), interval=1500
+)
 
 # Для того, чтобы получить гифку необходимо установить ImageMagick
 # Можно получить .mp4 файл без всяких magick-shmagick
