@@ -146,6 +146,25 @@ func main() {
 
 	//Структуры
 	p := person{name: "Kot", age: 10}
-	fmp.
-	p
+	fmt.Println(p)
+	fmt.Println(p.name)
+
+	//Указатели
+	myVal := 14
+	inc1(myVal)
+	fmt.Println(myVal)
+	fmt.Println(&myVal)
+	//Все еще будет 14
+
+	myVal = 14
+	inc2(&myVal)
+	fmt.Println(myVal)
+	fmt.Println(&myVal)
+}
+
+func inc1(x int){
+	x++
+}
+func inc2(x *int){
+	*x++
 }
