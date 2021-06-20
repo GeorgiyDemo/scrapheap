@@ -1,9 +1,26 @@
 <script>
 	let name = "KOSHKA";
-	let number = 11;
-	let cats = ["cat1", "cat2"]
-	let imgScr = "https://avatars.githubusercontent.com/u/16972045?v=4"
-	let htmlString = "<b>Это текст</b>"
+	let inputValue = "";
+	let cats = ["cat1", "cat2"];
+
+	let pos = {
+		x: 0,
+		y: 0
+	};
+	
+	function changeNameHandler() {
+		name = "Чета изменили"
+	};
+
+	function mouseMoveHandler(event){
+		pos.x = event.x
+		pos.y = event.y
+	};
+
+	function submitHandler(event){
+		console.log(inputValue)
+	}
+
 </script>
 
 <style>
@@ -19,6 +36,11 @@
 		height: auto;
 	}
 
+	#mylabel {
+		color: whitesmoke;
+
+	}
+
 	h1 {
 		color: #ff3e00;
 		text-transform: uppercase;
@@ -30,6 +52,14 @@
 		main {
 			max-width: none;
 		}
+	}
+
+	.myclass {
+		width: 400px;
+		height: 200px;
+		padding: 1rem;
+		margin-bottom: 1rem;
+		background-color: grey;
 	}
 </style>
 
@@ -48,5 +78,15 @@
 	{/each}
 </ul>
 
-<img src={imgScr} alt="check"/>
-<p>{@html htmlString}</p>
+<button on:click={changeNameHandler}>Нажми меня</button>
+
+
+<div class="myclass" on:mousemove={mouseMoveHandler}>
+	<h2 id="mylabel">{pos.x}, {pos.y}</h2>
+</div>
+
+
+<form on:submit|preventDefault={submitHandler}>
+	<input type="text" on:input={event => (inputValue = event.target.value)}>
+	<button type="submit">Отправка</button>
+</form>
