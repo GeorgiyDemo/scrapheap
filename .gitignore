@@ -102,3 +102,4 @@ ENV/
 *.DS_Store
 .idea
 *.ogg
+Java/Quarkus/json_qurkus_test/database/database/
