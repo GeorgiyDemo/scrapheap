@@ -1,7 +1,6 @@
 package org.acme.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Data;
@@ -27,7 +26,6 @@ public class TaskEntity extends PanacheEntity {
     @NotNull
     private List<WayPointModel> wayPoints;
 
-    @JsonManagedReference(value = "userTasks")
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
