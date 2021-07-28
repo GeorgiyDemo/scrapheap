@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_test
+      PGDATA: /data/postgres
+    volumes:
+      - ./database/postgres:/data/postgres
+    ports:
+      - "3535:5432"
+    restart: unless-stopped
